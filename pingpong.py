@@ -18,7 +18,7 @@ class Player(GameSprite):
         keys = key.get_pressed()
         if keys[K_W]:
             self.rect.y -= self.speed
-        if keys[K_S]
+        if keys[K_S]:
             self.rect.y -= self.speed
 
 class Enemy(GameSprite):
@@ -29,3 +29,8 @@ class Enemy(GameSprite):
             self.rect.x = randint(80, win_width - 80)
             self.rect.y = 0
             lost = lost + 1
+
+win_width = 700
+win_height = 500
+window = display.set_mode((win_width, win_height))
+display.set_caption('Shooter Game') 
