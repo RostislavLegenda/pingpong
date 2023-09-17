@@ -16,21 +16,44 @@ class GameSprite(sprite.Sprite):
 class Player(GameSprite):
     def update(self):
         keys = key.get_pressed()
-        if keys[K_W]:
+        if keys[K_w] and self.rect.y > 5:
             self.rect.y -= self.speed
-        if keys[K_S]:
-            self.rect.y -= self.speed
+        if keys[K_s] and self.rect.y < 350:
+            self.rect.y += self.speed
 
 class Enemy(GameSprite):
     def update(self):
-        self.rect.y += self.speed
-        global lost 
-        if self.rect.y > win_height:
-            self.rect.x = randint(80, win_width - 80)
-            self.rect.y = 0
-            lost = lost + 1
+        keys = key.get_pressed()
+        if keys[K_i] and self.rect.y > 5:
+            self.rect.y -= self.speed
+        if keys[K_k] and self.rect.y < 350:
+            self.rect.y += self.speed
 
 win_width = 700
 win_height = 500
 window = display.set_mode((win_width, win_height))
-display.set_caption('Shooter Game') 
+display.set_caption('Shooter Game')
+
+background = transform.scale(image.load('galaxy.jpg'), (win_width, win_height))
+
+stick1 = Player('stick.png', -20, 30, 200, 150, 2)
+stick2 = Enemy('stick.png', 540, 30, 200, 150, 2)
+
+
+game = True
+finish = False
+clock = time.Clock()
+FPS = 60
+while game:
+    for e in event.get():
+        if e.type == QUIT:
+            game = False
+    if finish != True:
+        window.blit(background, (0, 0))
+        stick1.update()
+        stick1.reset()
+        stick2.update()
+        stick2.reset()
+
+    display.update()
+       
