@@ -35,9 +35,17 @@ window = display.set_mode((win_width, win_height))
 display.set_caption('Shooter Game')
 
 background = transform.scale(image.load('galaxy.jpg'), (win_width, win_height))
+ball = GameSprite('ball.png', 100, 200, 100,100, 1)
 
-stick1 = Player('stick.png', -20, 30, 200, 150, 2)
-stick2 = Enemy('stick.png', 540, 30, 200, 150, 2)
+stick1 = Player('stick.png', 20, 30, 50, 150, 2)
+stick2 = Enemy('stick.png', 640, 30, 50, 150, 2)
+
+font1 = font.Font(None, 35)
+lose = font1.render('YOU LOSE', True, (255, 100, 100))
+
+
+speed_x = 1
+speed_y = 1
 
 
 game = True
@@ -50,10 +58,23 @@ while game:
             game = False
     if finish != True:
         window.blit(background, (0, 0))
+        ball.update()
+        ball.reset()
+        ball.rect.x += speed_x
+        ball.rect.y += speed_y
         stick1.update()
         stick1.reset()
         stick2.update()
         stick2.reset()
+        if ball.rect.y > win_height-30 or ball.rect.y < 0:
+            speed_y *= -1
+        if sprite.collide_rect(stick1, ball) or sprite.collide_rect(stick2, ball):
+            speed_x *= -1
+            speed_y *= 1
+        if ball.rect.x > 700 or ball.rect.x < -20:
+            finish = True
+            window.blit(lose, (300,220))
+
 
     display.update()
        
